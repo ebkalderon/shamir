@@ -84,8 +84,12 @@ pub struct SecretData {
 
 impl SecretData {
     pub fn with_secret(secret: &str, threshold: u8) -> SecretData {
-        let mut coefficients: Vec<Vec<u8>> = vec![];
         let mut rng = thread_rng();
+        Self::with_rng_and_secret(&mut rng, secret, threshold)
+    }
+
+    pub fn with_rng_and_secret<R: Rng>(rng: &mut R, secret: &str, threshold: u8) -> SecretData {
+        let mut coefficients: Vec<Vec<u8>> = vec![];
         let mut rand_container = [0u8, threshold - 1];
         for c in secret.as_bytes() {
             rng.fill_bytes(&mut rand_container);
